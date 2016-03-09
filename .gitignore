@@ -1,0 +1,13 @@
+# log files
+/log/
+
+# npm
+/node_modules/
+/npm-debug.log
+
+# Sublime Text
+/*.sublime-workspace
+/.testview.js
+
+# OS X
+.DS_Store

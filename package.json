@@ -1,0 +1,26 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "bin/start",
+    "preinstall": "bin/preinstall",
+    "postinstall": "bin/postinstall",
+    "test": "bin/test"
+  },
+  "author": "Dominic Rose",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "mongodb": "^2.1.7",
+    "socket.io": "^1.4.5",
+    "socket.io-emitter": "^1.0.0",
+    "socket.io-redis": "^1.0.0",
+    "string-hash": "^1.1.0",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "supervisor": "^0.9.1"
+  }
+}

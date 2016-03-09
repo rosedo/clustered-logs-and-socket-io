@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mv node_modules/log node_modules/winston || test 1

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+node_modules/.bin/supervisor \
+  -q \
+  -w index.js,lib \
+  index.js

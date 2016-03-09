@@ -1,0 +1,13 @@
+{
+  "globals": {},
+  "env": {},
+  "rules": {
+    "semi": 2,
+    "indent": 2,
+    "linebreak-style": 2
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+  },
+  "parser": "espree"
+}
