@@ -12,7 +12,9 @@
   "author": "Dominic Rose",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.3.0",
     "express": "^4.13.4",
+    "lodash": "^4.6.1",
     "mongodb": "^2.1.7",
     "socket.io": "^1.4.5",
     "socket.io-emitter": "^1.0.0",

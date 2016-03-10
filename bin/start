@@ -2,5 +2,5 @@
 
 node_modules/.bin/supervisor \
   -q \
-  -w index.js,lib \
+  -w . \
   index.js
