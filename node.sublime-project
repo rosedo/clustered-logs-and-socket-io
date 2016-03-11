@@ -4,6 +4,8 @@
 			"follow_symlinks": false,
 			"path": ".",
 			"folder_exclude_patterns": [
+				"log",
+				"public/vendor",
 			],
 			"file_exclude_patterns": [
 				"npm-debug.log",

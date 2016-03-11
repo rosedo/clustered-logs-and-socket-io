@@ -81,10 +81,11 @@ function registerPassword(arg) {
                     emit.one('event', user, 'init.registerPassword.user_created');
                     emit.one('event', user, 'init.registerPassword.user_connected');
                     client.controller = 'spam.spam';
+                    client.connected = true;
                     arg.user = user;
-                    return db.updateOne('clients', { id: client.id }, client)
-                    .then(() => controllers.spam.spam_init(arg));
+                    return db.updateOne('clients', { id: client.id }, client);
                 })
+                .then(() => controllers.spam.spam_init(arg))
                 .catch(reject);
             });
         });
