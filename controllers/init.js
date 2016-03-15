@@ -1,10 +1,12 @@
 'use strict';
+const _ = projectEnv._;
 const log = projectEnv.log;
 const middlewares = projectEnv.middlewares;
 const controllers = projectEnv.controllers;
 const emit = projectEnv.emit;
 const db = projectEnv.db;
 const bcrypt = projectEnv.bcrypt;
+const clients = projectEnv.clients;
 
 module.exports = {
     name: name,
@@ -35,12 +37,10 @@ function name(arg) {
         if (!user) {
             emit.one('event', client, 'init.name.not_found');
             client.controller = 'init.registerPassword';
-            return db.updateOne('clients', { id: client.id }, client)
-            .then(() => registerPassword_init(arg));
+            registerPassword_init(arg);
         }
         client.controller = 'init.loginPassword';
-        return db.updateOne('clients', { id: client.id }, client)
-        .then(() => loginPassword_init(arg));
+        loginPassword_init(arg);
         emit.one(client, 'Entrez votre mot de passe :');
     });
 }
@@ -83,10 +83,8 @@ function registerPassword(arg) {
                     client.controller = 'spam.spam';
                     client.connected = true;
                     arg.user = user;
-                    return db.updateOne('clients', { id: client.id }, client);
-                })
-                .then(() => controllers.spam.spam_init(arg))
-                .catch(reject);
+                    controllers.spam.spam_init(arg);
+                });
             });
         });
     })
@@ -123,30 +121,23 @@ function loginPassword(arg) {
             }
             let promise = Promise.resolve();
             if (user.room) {
-                promise = db.findOne('clients', { room: user.room })
-                .then(client => {
-                    if (client) {
-                        emit.one('event', user, 'init.loginPassword.double_connection');
-                        emit.one(user, 'Ce compte est réquisitionné par une autre session.');
-                        client.controller = 'init.name';
-                        delete client.connected;
-                        return db.updateOne('clients', { _id: client._id }, client)
-                        .then(() => name_init({ client: client }));
-                    }
-                });
+                const foundClient = _.find(clients, client => client.room === user.room);
+                if (foundClient) {
+                    emit.one('event', user, 'init.loginPassword.double_connection');
+                    emit.one(user, 'Ce compte est réquisitionné par une autre session.');
+                    foundClient.controller = 'init.name';
+                    delete foundClient.connected;
+                    name_init({ foundClient: foundClient });
+                }
             }
-            return promise
-            .then(() => {
-                user.room = client.room;
-                return db.updateOne('users', { _id: user._id }, user);
-            })
+            user.room = client.room;
+            return db.updateOne('users', { _id: user._id }, user)
             .then(() => {
                 emit.one('event', user, 'init.loginPassword.user_connected');
                 client.controller = 'spam.spam';
                 client.connected = true;
                 arg.user = user;
-                return db.updateOne('clients', { _id: client._id }, client)
-                .then(() => controllers.spam.spam_init(arg));
+                controllers.spam.spam_init(arg);
             })
             .catch(reject);
         });
